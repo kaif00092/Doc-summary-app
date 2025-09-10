@@ -28,10 +28,8 @@ function App() {
     formData.append("summaryLength", summaryLength);
 
     try {
-      const response = await axios.post(
-        "http://localhost:3030/api/summarize",
-        formData
-      );
+      const apiUrl = `${process.env.REACT_APP_API_URL}/api/summarize`;
+      const response = await axios.post(apiUrl, formData);
       setSummaryData(response.data);
     } catch (err) {
       setError(err.response?.data?.error || "An unexpected error occurred.");

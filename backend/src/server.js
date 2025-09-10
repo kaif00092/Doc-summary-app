@@ -2,9 +2,10 @@ import express from "express";
 import cors from "cors";
 import "dotenv/config";
 import summaryRoutes from "./routes/summaryRoutes.js";
-
+import path from "path";
 const app = express();
 const port = process.env.PORT || 3030;
+const __dirname = path.resolve();
 
 // middleware
 app.use(cors());
@@ -12,6 +13,7 @@ app.use(express.json());
 
 //api route
 app.use("/api", summaryRoutes);
+app.use(express.static(path.join(__dirname)));
 
 //for Error handling
 
