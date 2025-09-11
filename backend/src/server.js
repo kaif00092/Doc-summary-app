@@ -8,15 +8,24 @@ const port = process.env.PORT || 3030;
 const __dirname = path.resolve();
 
 // middleware
-app.use(cors());
+if (process.env.NODE_ENV !== "production") {
+  app.use(cors({ origin: "http://localhost:5173/" }));
+}
+
 app.use(express.json());
 
 //api route
 app.use("/api", summaryRoutes);
-app.use(express.static(path.join(__dirname)));
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+
+  app.get("", (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend", "dist", "index.html"));
+  });
+}
 
 //for Error handling
-
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Something went wrong!");
